@@ -10,6 +10,7 @@ class PMP_PLayer;
 class PMP_PLayer : public QFrame
 {
     Q_OBJECT
+private:
 
 public:
     explicit PMP_PLayer(QWidget *parent = 0);

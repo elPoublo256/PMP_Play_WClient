@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     myclient.cpp \
     start.cpp \
     createuser.cpp \
-    pmp_player.cpp
+    pmp_player.cpp \
+    treck.cpp
 
 HEADERS  += mainwindow.h \
     myclient.h \
     start.h \
     createuser.h \
-    pmp_player.h
+    pmp_player.h \
+    treck.h
 
 FORMS    += mainwindow.ui \
     start.ui \

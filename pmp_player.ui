@@ -169,6 +169,16 @@
     <string>Valume</string>
    </property>
   </widget>
+  <widget class="QListWidget" name="PlaylistWidget">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>40</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -3,7 +3,8 @@
 
 #include <QFrame>
 #include <QTcpSocket>
-
+#include <createuser.h>
+#include <pmp_player.h>
 namespace Ui {
 class Start;
 }
@@ -16,8 +17,13 @@ public:
     explicit Start(QWidget *parent = 0);
     ~Start();
 
+
 private:
     Ui::Start *ui;
+private slots:
+    void send_LoginPosward();
+    void send_NewUser();
+
 };
 
 #endif // START_H
