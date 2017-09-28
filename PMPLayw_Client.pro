@@ -14,9 +14,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    myclient.cpp
+    myclient.cpp \
+    start.cpp \
+    createuser.cpp \
+    pmp_player.cpp
 
 HEADERS  += mainwindow.h \
-    myclient.h
+    myclient.h \
+    start.h \
+    createuser.h \
+    pmp_player.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    start.ui \
+    createuser.ui \
+    pmp_player.ui

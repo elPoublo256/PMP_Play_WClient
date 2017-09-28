@@ -2,6 +2,7 @@
 #define START_H
 
 #include <QFrame>
+#include <QTcpSocket>
 
 namespace Ui {
 class Start;
