@@ -25,15 +25,18 @@ public:
  bool operator >(const QString& a){return a>this->point->ret_name();}
 };
 
-class Albom;
+//class Albom;
 class Group
 {
-private:
+//private:
+public:
     QString name_Group;
     QSet<Area*> set_Area;
-    QList<Albom*> List;
+
+ //   QList<Albom*> List;
 
 public:
+    Group(){}
     virtual QString ret_Name(){return name_Group;}
     Group(const QString& Name){name_Group=Name;}
     void add_Area(Area* pointer_area){set_Area.insert(pointer_area);}
@@ -47,7 +50,7 @@ QString name_Albom;
 Group* group;
 public:
 Albom(const QString& Name, Group* parent){name_Albom=Name; name_Group=parent->ret_Name(); group=parent;}
-Albom(const QString &Name, const QString& ggroup ){name_Albom=Mame; name_Group=ggroup;group=new Group(ggroup)/*надо зделать свой аалокатор груп*/;}
+Albom(const QString &Name, const QString& ggroup ){name_Albom=Name; name_Group=ggroup;group=new Group(ggroup)/*надо зделать свой аалокатор груп*/;}
 virtual QString ret_Name(){return name_Albom;}
 virtual QString retFullName(){return "<a>="+ret_Name()+"<g>="+Group::ret_Name();}
 

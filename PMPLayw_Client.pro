@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       +=network
+QT       += multimedia #sudo apt-get install qtmultimedia5-dev
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = PMPLayw_Client

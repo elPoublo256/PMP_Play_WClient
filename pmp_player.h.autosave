@@ -15,6 +15,7 @@ class PMP_PLayer : public QFrame
 private:
     QMediaPlaylist* mediaPlaylst;//http://doc.qt.io/qt-5/qmediaplaylist.html
     QMediaPlayer* mediaPlayer;
+    bool isPlaing;
 
 public:
     explicit PMP_PLayer(QWidget *parent = 0);
