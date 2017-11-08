@@ -4,7 +4,13 @@
 #include <QFrame>
 #include <QtMultimedia>
 #include <QMediaPlayer>
+#include <QFont>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QFileDialog>
 
+class PMP_PLayer_options;
 namespace Ui {
 class PMP_PLayer;
 }
@@ -15,7 +21,6 @@ class PMP_PLayer : public QFrame
 private:
     QMediaPlaylist* mediaPlaylst;//http://doc.qt.io/qt-5/qmediaplaylist.html
     QMediaPlayer* mediaPlayer;
-    bool isPlaing;
 
 public:
     explicit PMP_PLayer(QWidget *parent = 0);
@@ -33,6 +38,20 @@ public slots:
     void on_Back_cliced();
     void on_PausePlay_cliced();
 
+};
+
+class PMP_PLayer_options : public QWidget
+{
+    Q_OBJECT
+private:
+
+    
+    
+public:
+    PMP_PLayer_options(QWidget parent=NULL);
+    ~PMP_PLayer_options();
+//protected:
+    
 };
 
 #endif // PMP_PLAYER_H
