@@ -30,11 +30,21 @@ PMP_PLayer::~PMP_PLayer()
 
 void PMP_PLayer::on_File_cliced()
 {
-    QFileDialog file_dialog();
+    QString dirr=*(options->directory_opt->sstring);
+    QStringList sl = QFileDialog::getOpenFileNames(this,"What you'd like hear?",dirr);
+    for( QString s : sl)
+    {
+        QStringList ssl=s.split("/");
+         QString sss=ssl[ssl.size()-1];
+        ui->PlaylistWidget->addItem(sss);
+
+    }
+
 
 }
 void PMP_PLayer::on_Options_cliced()
 {
+    options->show();
 
 }
 
@@ -87,6 +97,7 @@ Base_OpWg::~Base_OpWg()
 
  PMP_PLayer_options::PMP_PLayer_options(QWidget* parent) : QWidget(parent)
 {
+     directory_opt=new Base_OpWg("applay","/home/","start directory","/home/");
 
 }
 

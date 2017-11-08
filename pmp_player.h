@@ -72,21 +72,17 @@ class PMP_PLayer_options : public QWidget
 private:
 //protected:
 public:
+
+
     //QString Font_of_PMP_Player;
     ///there are mambers using for chois font of PMP_Player
-   // Base_OpWg font_opt;
-    QBrush* Brush_PMP_Player;
+    Base_OpWg* font_opt;
+
 
     ///there are member for chois a statr directory
     /// when user chois local file
     /// for adding in playlist
-   // Base_OpWg directory_opt;
-
-
-
-
-
-
+    Base_OpWg* directory_opt;
 public:
     PMP_PLayer_options(QWidget* parent=NULL);
     ~PMP_PLayer_options();
