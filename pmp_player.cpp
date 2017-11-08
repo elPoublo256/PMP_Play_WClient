@@ -5,18 +5,23 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::PMP_PLayer)
 {
+    timer=new QTimer;
     options = new PMP_PLayer_options();
     isPlaing=false;
     ui->setupUi(this);
     mediaPlaylst=new QMediaPlaylist();
     mediaPlayer=new QMediaPlayer();
+    time_sec=0;time_min=0;time_h=0;
+    time_of_play=new QTime(0,0,0);
     mediaPlayer->setPlaylist(mediaPlaylst);
     connect(ui->FilepushButton,SIGNAL(clicked(bool)),this,SLOT(on_File_cliced()));
     connect(ui->OptionspushButton_2,SIGNAL(clicked(bool)),this,SLOT(on_Options_cliced()));
     connect(ui->SearchpushButton_3,SIGNAL(clicked(bool)),this,SLOT(on_Serch_cliced()));
     connect(ui->BackpushButton_5,SIGNAL(clicked(bool)),this,SLOT(on_Back_cliced()));
     connect(ui->PausepushButton_6,SIGNAL(clicked(bool)),this,SLOT(on_PausePlay_cliced()));
+    connect(ui->NextpushButton_8,SIGNAL(clicked(bool)),this,SLOT(on_Next_cliced()));
     connect(ui->ValumeSlider,SIGNAL(valueChanged(int)),this,SLOT(on_valume_change()));
+    connect(this->timer,SIGNAL(timeout()),this,SLOT(timer_update()));
     ui->ValumeSlider->setValue(50);
 }
 
@@ -26,12 +31,19 @@ PMP_PLayer::~PMP_PLayer()
     delete mediaPlayer;
     delete mediaPlaylst;
     delete options;
+    delete timer;
 }
 
 void PMP_PLayer::on_File_cliced()
 {
     QString dirr=*(options->directory_opt->sstring);
     QStringList sl = QFileDialog::getOpenFileNames(this,"What you'd like hear?",dirr);
+    bool dog=false;
+    if(ui->PlaylistWidget->count()==0)
+    {
+        dog=true;
+    }
+
     for( QString s : sl)
     {
         mediaPlaylst->addMedia(QUrl::fromLocalFile(s));
@@ -39,6 +51,10 @@ void PMP_PLayer::on_File_cliced()
          QString sss=ssl[ssl.size()-1];
         ui->PlaylistWidget->addItem(sss);
 
+    }
+    if(dog)
+    {
+        ui->PlaylistWidget->setCurrentRow(0);
     }
 
 
@@ -61,7 +77,7 @@ void PMP_PLayer::on_exit_cliced()
 
 void PMP_PLayer::on_Back_cliced()
 {
-
+  mediaPlaylst->previous();
 }
 
 void PMP_PLayer::on_PausePlay_cliced()
@@ -71,7 +87,9 @@ void PMP_PLayer::on_PausePlay_cliced()
      isPlaing=false;
      mediaPlayer->pause();
      ui->PausepushButton_6->setText("|>");
-     ui->timeEdit->startTimer(1);
+     timer->stop();
+
+
 
  }
  else
@@ -79,12 +97,26 @@ void PMP_PLayer::on_PausePlay_cliced()
      isPlaing=true;
      mediaPlayer->play();
      ui->PausepushButton_6->setText("||");
+     ui->timeEdit->startTimer(1);
+     timer->start(1000);
+     time_of_play->start();
+     //time_of_play->setHMS()
  }
+}
+
+void PMP_PLayer::on_Next_cliced()
+{
+    mediaPlaylst->next();
 }
 
 void PMP_PLayer::on_valume_change()
 {
     mediaPlayer->setVolume(ui->ValumeSlider->value());
+}
+
+void PMP_PLayer::timer_update()
+{
+    ui->timeEdit->setTime(*time_of_play);
 }
 
 Base_OpWg::Base_OpWg(QString battonString, QString lineEditString,
