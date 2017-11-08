@@ -5,6 +5,7 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::PMP_PLayer)
 {
+    options = new PMP_PLayer_options();
     isPlaing=false;
     ui->setupUi(this);
     mediaPlaylst=new QMediaPlaylist();
@@ -24,6 +25,7 @@ PMP_PLayer::~PMP_PLayer()
     delete ui;
     delete mediaPlayer;
     delete mediaPlaylst;
+    delete options;
 }
 
 void PMP_PLayer::on_File_cliced()
@@ -55,3 +57,12 @@ void PMP_PLayer::on_PausePlay_cliced()
 
 }
 
+ PMP_PLayer_options::PMP_PLayer_options(QWidget* parent) : QWidget(parent)
+{
+
+}
+
+ PMP_PLayer_options::~PMP_PLayer_options()
+{
+
+}
