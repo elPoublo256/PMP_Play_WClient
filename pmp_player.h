@@ -12,7 +12,7 @@
 #include <QBrush>
 #include <QLabel>
 #include <QLineEdit>
-
+class Base_OpWg;
 class PMP_PLayer_options;
 namespace Ui {
 class PMP_PLayer;
@@ -45,19 +45,43 @@ public slots:
 
 };
 
+class Base_OpWg : public QWidget
+{
+    Q_OBJECT
+private:
+public:
+    Base_OpWg(){}
+Base_OpWg(QString battonString,QString lineEditString,
+QString labelString,QString string_string);
+~Base_OpWg();
+    QPushButton* button;
+    QLineEdit* line_edit;
+    QLabel* label;
+    QString* sstring;
+    QHBoxLayout* hblayout;
+
+};
+
 class PMP_PLayer_options : public QWidget
 {
+
     ///this class provide optins for PMP_Player
     /// like fomt
     ///
     Q_OBJECT
 private:
-
+//protected:
+public:
     //QString Font_of_PMP_Player;
     ///there are mambers using for chois font of PMP_Player
-    QPushButton* ChoiseFant;
-    QLineEdit* Font_NameFile;
+   // Base_OpWg font_opt;
     QBrush* Brush_PMP_Player;
+
+    ///there are member for chois a statr directory
+    /// when user chois local file
+    /// for adding in playlist
+   // Base_OpWg directory_opt;
+
 
 
 
@@ -66,7 +90,10 @@ private:
 public:
     PMP_PLayer_options(QWidget* parent=NULL);
     ~PMP_PLayer_options();
-//protected:
+public slots:
+    void aplay_font();
+    void aplay_directory();
+
 
 
 };
