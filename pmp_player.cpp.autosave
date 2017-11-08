@@ -5,6 +5,7 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::PMP_PLayer)
 {
+    timer=new QTimer;
     options = new PMP_PLayer_options();
     isPlaing=false;
     ui->setupUi(this);
@@ -17,6 +18,7 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     connect(ui->BackpushButton_5,SIGNAL(clicked(bool)),this,SLOT(on_Back_cliced()));
     connect(ui->PausepushButton_6,SIGNAL(clicked(bool)),this,SLOT(on_PausePlay_cliced()));
     connect(ui->ValumeSlider,SIGNAL(valueChanged(int)),this,SLOT(on_valume_change()));
+    connect(this->timer,SIGNAL(timeout()),this,SLOT(timer_update()));
     ui->ValumeSlider->setValue(50);
 }
 
@@ -26,6 +28,7 @@ PMP_PLayer::~PMP_PLayer()
     delete mediaPlayer;
     delete mediaPlaylst;
     delete options;
+    delete timer;
 }
 
 void PMP_PLayer::on_File_cliced()
@@ -71,7 +74,8 @@ void PMP_PLayer::on_PausePlay_cliced()
      isPlaing=false;
      mediaPlayer->pause();
      ui->PausepushButton_6->setText("|>");
-     ui->timeEdit->startTimer(1);
+     timer->stop();
+     
 
  }
  else
@@ -79,12 +83,19 @@ void PMP_PLayer::on_PausePlay_cliced()
      isPlaing=true;
      mediaPlayer->play();
      ui->PausepushButton_6->setText("||");
+     ui->timeEdit->startTimer(1);
+     timer->start(1000);
  }
 }
 
 void PMP_PLayer::on_valume_change()
 {
     mediaPlayer->setVolume(ui->ValumeSlider->value());
+}
+
+void PMP_PLayer::timer_update()
+{
+    ui->timeEdit->set
 }
 
 Base_OpWg::Base_OpWg(QString battonString, QString lineEditString,
