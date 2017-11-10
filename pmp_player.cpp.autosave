@@ -82,7 +82,8 @@ void PMP_PLayer::on_exit_cliced()
 void PMP_PLayer::on_Back_cliced()
 {
   currentMedCont_index--;
-ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
+//ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
+  
   mediaPlaylst->previous();
 }
 
