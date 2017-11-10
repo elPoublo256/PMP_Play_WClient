@@ -11,8 +11,8 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     ui->setupUi(this);
     mediaPlaylst=new QMediaPlaylist();
     mediaPlayer=new QMediaPlayer();
-    time_sec=0;time_min=0;time_h=0;
-    time_of_play=new QTime(0,0,0);
+
+    time_of_play=QTime(0,0,0);
     mediaPlayer->setPlaylist(mediaPlaylst);
     connect(ui->FilepushButton,SIGNAL(clicked(bool)),this,SLOT(on_File_cliced()));
     connect(ui->OptionspushButton_2,SIGNAL(clicked(bool)),this,SLOT(on_Options_cliced()));
@@ -23,6 +23,7 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     connect(ui->ValumeSlider,SIGNAL(valueChanged(int)),this,SLOT(on_valume_change()));
     connect(this->timer,SIGNAL(timeout()),this,SLOT(timer_update()));
     ui->ValumeSlider->setValue(50);
+
 }
 
 PMP_PLayer::~PMP_PLayer()
@@ -54,7 +55,9 @@ void PMP_PLayer::on_File_cliced()
     }
     if(dog)
     {
+        currentMedCont_index=0;
         ui->PlaylistWidget->setCurrentRow(0);
+
     }
 
 
@@ -99,7 +102,8 @@ void PMP_PLayer::on_PausePlay_cliced()
      ui->PausepushButton_6->setText("||");
      ui->timeEdit->startTimer(1);
      timer->start(1000);
-     time_of_play->start();
+
+
      //time_of_play->setHMS()
  }
 }
@@ -116,7 +120,27 @@ void PMP_PLayer::on_valume_change()
 
 void PMP_PLayer::timer_update()
 {
-    ui->timeEdit->setTime(*time_of_play);
+
+
+    ui->timeEdit->setTime(time_of_play);
+}
+
+void PMP_PLayer::on_current_media_changed_from_back_but()
+{
+
+}
+void PMP_PLayer::on_current_media_changed_from_next_but()
+{
+
+}
+void PMP_PLayer::on_current_media_changed_from_listwidget()
+{
+
+}
+
+void PMP_PLayer::on_current_media_changed()
+{
+
 }
 
 Base_OpWg::Base_OpWg(QString battonString, QString lineEditString,
@@ -161,4 +185,33 @@ Base_OpWg::~Base_OpWg()
 void PMP_PLayer_options::aplay_directory()
 {
 
+}
+QTime operator +(QTime a,QTime b)
+{
+    int hh=a.hour()+b.hour();
+    int mm=a.minute()+b.minute();
+    int ss=a.second()+b.second();
+    if(mm>=60)
+    {
+        hh++;
+        mm=mm-60;
+    }
+    if(mm>=60)
+    {
+        hh++;
+        mm=mm-60;
+    }
+    if(ss>=60)
+    {
+        mm++;
+        ss=ss-60;
+        if(mm>=60)
+        {
+            hh++;
+            mm=mm-60;
+        }
+    }
+
+     QTime res;
+     return res;
 }

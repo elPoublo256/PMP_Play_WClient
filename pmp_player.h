@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QtMultimedia>
 #include <QMediaPlayer>
+#include <QMediaMetaData>
 #include <QFont>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -19,16 +20,14 @@ class PMP_PLayer_options;
 namespace Ui {
 class PMP_PLayer;
 }
-
+class MyQTime;
 class PMP_PLayer : public QFrame
 {
     Q_OBJECT
 private:
+    int currentMedCont_index;
+    QTime time_of_play;
 
-    QTime* time_of_play;
-    int time_sec;
-    int time_min;
-    int time_h;
     PMP_PLayer_options* options;
     bool isPlaing;
     QMediaPlaylist* mediaPlaylst;//http://doc.qt.io/qt-5/qmediaplaylist.html
@@ -41,6 +40,7 @@ public:
 private:
     Ui::PMP_PLayer *ui;
 signals:
+   void change_current_media();
 
 public slots:
     void on_File_cliced();
@@ -52,6 +52,14 @@ public slots:
     void on_PausePlay_cliced();
     void on_valume_change();
     void timer_update();
+    void on_current_media_changed_from_next_but();
+    void on_current_media_changed_from_back_but();
+    void on_current_media_changed_from_listwidget();
+
+
+
+
+    void on_current_media_changed();
 };
 
 class Base_OpWg : public QWidget
@@ -102,5 +110,7 @@ public slots:
 
 
 };
+
+QTime operator +(QTime a,QTime b);
 
 #endif // PMP_PLAYER_H
