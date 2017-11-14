@@ -11,17 +11,33 @@ PMP_PLayer::PMP_PLayer(QWidget *parent) :
     ui->setupUi(this);
     mediaPlaylst=new QMediaPlaylist();
     mediaPlayer=new QMediaPlayer();
-
+    titleImage_Scene=new QGraphicsScene();
     time_of_play=QTime(0,0,0);
     mediaPlayer->setPlaylist(mediaPlaylst);
+    currentMedCont_index=0;
+    ui->graphicsView->setScene(titleImage_Scene);
+
     connect(ui->FilepushButton,SIGNAL(clicked(bool)),this,SLOT(on_File_cliced()));
     connect(ui->OptionspushButton_2,SIGNAL(clicked(bool)),this,SLOT(on_Options_cliced()));
     connect(ui->SearchpushButton_3,SIGNAL(clicked(bool)),this,SLOT(on_Serch_cliced()));
-    connect(ui->BackpushButton_5,SIGNAL(clicked(bool)),this,SLOT(on_Back_cliced()));
     connect(ui->PausepushButton_6,SIGNAL(clicked(bool)),this,SLOT(on_PausePlay_cliced()));
-    connect(ui->NextpushButton_8,SIGNAL(clicked(bool)),this,SLOT(on_Next_cliced()));
     connect(ui->ValumeSlider,SIGNAL(valueChanged(int)),this,SLOT(on_valume_change()));
     connect(this->timer,SIGNAL(timeout()),this,SLOT(timer_update()));
+    connect(mediaPlayer,SIGNAL(positionChanged(qint64)),this,SLOT(position_changed(qint64)));
+    connect(mediaPlayer,SIGNAL(durationChanged(qint64)),this,SLOT(duration_changed(qint64)));
+    connect(ui->horizontalSlider,SIGNAL(valueChanged(int)),this,SLOT(on_position_changed()));
+
+
+    connect(mediaPlayer,SIGNAL(metaDataChanged()),this,SLOT(metadata_change()));
+
+
+    //connect controle playlist
+    connect(this,SIGNAL(change_current_media(int)),this, SLOT(on_current_media_changed(int)));
+    connect(ui->NextpushButton_8,SIGNAL(clicked(bool)),this,SLOT(on_Next_cliced()));
+    connect(ui->BackpushButton_5,SIGNAL(clicked(bool)),this,SLOT(on_Back_cliced()));
+    connect(ui->PlaylistWidget,SIGNAL(itemClicked(QListWidgetItem*)),this, SLOT(on_listwidgetintem_cliced(QListWidgetItem*)));
+
+
 
     ui->ValumeSlider->setValue(50);
 
@@ -40,11 +56,8 @@ void PMP_PLayer::on_File_cliced()
 {
     QString dirr=*(options->directory_opt->sstring);
     QStringList sl = QFileDialog::getOpenFileNames(this,"What you'd like hear?",dirr);
-    bool dog=false;
-    if(ui->PlaylistWidget->count()==0)
-    {
-        dog=true;
-    }
+
+
 
     for( QString s : sl)
     {
@@ -54,12 +67,8 @@ void PMP_PLayer::on_File_cliced()
         ui->PlaylistWidget->addItem(sss);
 
     }
-    if(dog)
-    {
-        currentMedCont_index=0;
-        ui->PlaylistWidget->setCurrentRow(0);
 
-    }
+
 
 
 }
@@ -81,9 +90,11 @@ void PMP_PLayer::on_exit_cliced()
 
 void PMP_PLayer::on_Back_cliced()
 {
-  currentMedCont_index--;
-ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
-  mediaPlaylst->previous();
+    emit change_current_media(--currentMedCont_index);
+  //currentMedCont_index--;
+//ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
+
+  //mediaPlaylst->previous();
 }
 
 void PMP_PLayer::on_PausePlay_cliced()
@@ -113,14 +124,37 @@ void PMP_PLayer::on_PausePlay_cliced()
 
 void PMP_PLayer::on_Next_cliced()
 {
-  currentMedCont_index--;
-  ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
-    mediaPlaylst->next();
+    emit change_current_media(++currentMedCont_index);
+
+  //currentMedCont_index--;
+  //ui->PlaylistWidget->setCurrentRow(currentMedCont_index);
+  //  mediaPlaylst->next();
+}
+
+void PMP_PLayer::on_current_media_changed(int i)
+{
+    emit ui->PlaylistWidget->itemPressed(ui->PlaylistWidget->item(i));
+
+    mediaPlaylst->setCurrentIndex(i);
+    ui->PlaylistWidget->setCurrentRow(i);
+}
+
+void PMP_PLayer::on_listwidgetintem_cliced(QListWidgetItem* item_point)
+{
+  emit change_current_media(currentMedCont_index=ui->PlaylistWidget->row(item_point));
 }
 
 void PMP_PLayer::on_valume_change()
 {
+
     mediaPlayer->setVolume(ui->ValumeSlider->value());
+
+}
+
+void PMP_PLayer::on_position_changed()
+{
+    qint64 t=ui->horizontalSlider->value();
+    mediaPlayer->setPosition(t);
 }
 
 void PMP_PLayer::timer_update()
@@ -131,23 +165,7 @@ void PMP_PLayer::timer_update()
     ui->timeEdit->setTime(a);
 }
 
-void PMP_PLayer::on_current_media_changed_from_back_but()
-{
 
-}
-void PMP_PLayer::on_current_media_changed_from_next_but()
-{
-
-}
-void PMP_PLayer::on_current_media_changed_from_listwidget()
-{
-
-}
-
-void PMP_PLayer::on_current_media_changed()
-{
-
-}
 
 Base_OpWg::Base_OpWg(QString battonString, QString lineEditString,
   QString labelString, QString string_string) : QWidget(0)
@@ -192,32 +210,25 @@ void PMP_PLayer_options::aplay_directory()
 {
 
 }
-QTime operator +(QTime a,QTime b)
-{
-    int hh=a.hour()+b.hour();
-    int mm=a.minute()+b.minute();
-    int ss=a.second()+b.second();
-    if(mm>=60)
-    {
-        hh++;
-        mm=mm-60;
-    }
-    if(mm>=60)
-    {
-        hh++;
-        mm=mm-60;
-    }
-    if(ss>=60)
-    {
-        mm++;
-        ss=ss-60;
-        if(mm>=60)
-        {
-            hh++;
-            mm=mm-60;
-        }
-    }
 
-     QTime res;
-     return res;
+
+void PMP_PLayer::metadata_change()
+{
+    //QVariant variant=mediaPlayer->metaData(QMediaMetaData::AlbumTitle);
+    ui->Albom_Label->setText(mediaPlayer->metaData(QMediaMetaData::AlbumTitle).toString());
+    ui->Auther_label->setText( mediaPlayer->metaData(QMediaMetaData::Author).toString());
+    ui->Treck_Label->setText(mediaPlayer->metaData(QMediaMetaData::Title).toString());
+
+
+}
+void PMP_PLayer::duration_changed(qint64 i)
+{
+ //QTime t(int(i));
+ ui->horizontalSlider->setRange(0,i);
+
+}
+void PMP_PLayer::position_changed(qint64 i)
+{
+    //ui->horizontalSlider->setTickPosition(i);
+    ui->horizontalSlider->setValue(i);
 }

@@ -14,6 +14,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTimer>
+#include <QListWidgetItem>
+#include <QGraphicsScene>
 
 class Base_OpWg;
 class PMP_PLayer_options;
@@ -30,9 +32,14 @@ private:
 
     PMP_PLayer_options* options;
     bool isPlaing;
-    QMediaPlaylist* mediaPlaylst;//http://doc.qt.io/qt-5/qmediaplaylist.html
+    QMediaPlaylist* mediaPlaylst;
     QMediaPlayer* mediaPlayer;
     QTimer* timer;
+    QString theAuther;
+    QString theAlbom;
+
+    QGraphicsScene* titleImage_Scene;
+
 public:
     explicit PMP_PLayer(QWidget *parent = 0);
     ~PMP_PLayer();
@@ -40,7 +47,8 @@ public:
 private:
     Ui::PMP_PLayer *ui;
 signals:
-   void change_current_media();
+   void change_current_media(int i);
+
 
 public slots:
     void on_File_cliced();
@@ -51,15 +59,19 @@ public slots:
     void on_Next_cliced();
     void on_PausePlay_cliced();
     void on_valume_change();
+    void on_position_changed();
     void timer_update();
-    void on_current_media_changed_from_next_but();
-    void on_current_media_changed_from_back_but();
-    void on_current_media_changed_from_listwidget();
+
+    void metadata_change();
+    void duration_changed(qint64 i);
+    void position_changed(qint64 i);
 
 
 
 
-    void on_current_media_changed();
+
+    void on_current_media_changed(int i);
+    void on_listwidgetintem_cliced(QListWidgetItem*);
 };
 
 class Base_OpWg : public QWidget
@@ -111,6 +123,5 @@ public slots:
 
 };
 
-QTime operator +(QTime a,QTime b);
 
 #endif // PMP_PLAYER_H
