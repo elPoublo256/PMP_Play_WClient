@@ -58,9 +58,9 @@ public slots:
     void on_Back_cliced();
     void on_Next_cliced();
     void on_PausePlay_cliced();
+
     void on_valume_change();
     void on_position_changed();
-    void timer_update();
 
     void metadata_change();
     void duration_changed(qint64 i);

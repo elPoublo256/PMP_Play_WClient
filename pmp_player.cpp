@@ -104,7 +104,7 @@ void PMP_PLayer::on_PausePlay_cliced()
      isPlaing=false;
      mediaPlayer->pause();
      ui->PausepushButton_6->setText("|>");
-     timer->stop();
+
 
 
 
@@ -115,8 +115,6 @@ void PMP_PLayer::on_PausePlay_cliced()
      mediaPlayer->play();
      ui->PausepushButton_6->setText("||");
      ui->timeEdit->startTimer(1);
-     timer->start(1000);
-
 
      //time_of_play->setHMS()
  }
@@ -155,15 +153,12 @@ void PMP_PLayer::on_position_changed()
 {
     qint64 t=ui->horizontalSlider->value();
     mediaPlayer->setPosition(t);
+    QTime tt;
+    tt.setHMS(0,0,t);
+    ui->timeEdit->setTime(tt);
 }
 
-void PMP_PLayer::timer_update()
-{
 
-     QTime a=ui->timeEdit->time();
-     a.addSecs(1);
-    ui->timeEdit->setTime(a);
-}
 
 
 
