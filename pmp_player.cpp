@@ -220,7 +220,7 @@ void PMP_PLayer::duration_changed(qint64 i)
 {
  //QTime t(int(i));
  ui->horizontalSlider->setRange(0,i);
-
+//using it colculete h, min,sec and print in label
 }
 void PMP_PLayer::position_changed(qint64 i)
 {
